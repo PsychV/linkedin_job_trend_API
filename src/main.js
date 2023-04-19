@@ -7,7 +7,8 @@ const startUrls = ['https://www.linkedin.com/jobs/search/?currentJobId=332981428
 const crawler = new CheerioCrawler({
     maxConcurrency: 1,
     maxRequestsPerCrawl: 1000, 
-    maxRequestsPerMinute: 1, // Linkedin limit seems to be around 900 requests per hour -> https://github.com/tomquirk/linkedin-api
+    maxRequestsPerMinute: 26, // Linkedin limit seems to be around 900 requests per hour -> https://github.com/tomquirk/linkedin-api
+    
     requestHandler: router,
 });
 
