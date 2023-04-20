@@ -14,7 +14,7 @@ router.addHandler('detail', async ({ request, $, log }) => {
     await sleep(500 + (Math.random() * 1500));
     const title = $('title').text();
     log.info(`${title}`, { url: request.loadedUrl });
-
+    
     await Dataset.pushData({
         url: request.loadedUrl,
         title,
