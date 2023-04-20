@@ -14,7 +14,7 @@ const crawler = new CheerioCrawler({
     proxyConfiguration,
     maxConcurrency: 1,
     maxRequestsPerCrawl: 1000, 
-    maxRequestsPerMinute: 26, // Linkedin limit seems to be around 900 requests per hour -> https://github.com/tomquirk/linkedin-api
+    maxRequestsPerMinute: 15, // Linkedin limit seems to be around 900 requests per hour -> https://github.com/tomquirk/linkedin-api
     requestHandler: router,
 });
 
