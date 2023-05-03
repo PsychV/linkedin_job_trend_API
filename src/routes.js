@@ -17,7 +17,10 @@ router.addHandler('detail', async ({ request, $, log }) => {
     const title = $('title').text();
     log.info(`${title}`, { url: request.loadedUrl });
 
-    const jobDescription = $('.core-section-container__content').text().replace(/\s{2,}/g," ");
+    const jobDescription = $('.core-section-container__content')
+        .text()
+        .replace(/\s{2,}/g," ");
+
     log.info(`${jobDescription.substring(0, 300)}`);
     
     await Dataset.pushData({
