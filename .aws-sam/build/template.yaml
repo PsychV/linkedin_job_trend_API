@@ -14,10 +14,10 @@ Resources:
       Architectures:
       - x86_64
       Events:
-        HelloWorld:
+        search:
           Type: Api
           Properties:
-            Path: /test
+            Path: /search
             Method: get
       ImageUri: crawlerfunction:linkendin_job_trend_container
     Metadata:
@@ -25,20 +25,3 @@ Resources:
       DockerTag: linkendin_job_trend_container
       Dockerfile: Dockerfile
       SamResourceId: CrawlerFunction
-Outputs:
-  HelloWorldApi:
-    Description: API Gateway endpoint URL for Prod stage for Hello World function
-    Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
-  HelloWorldFunction:
-    Description: Hello World Lambda Function ARN
-    Value:
-      Fn::GetAtt:
-      - HelloWorldFunction
-      - Arn
-  HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
-    Value:
-      Fn::GetAtt:
-      - HelloWorldFunctionRole
-      - Arn

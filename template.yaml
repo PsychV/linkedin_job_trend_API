@@ -1,27 +1,30 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Linkedin job api trend with node.js, crawlee.js. DynamoDB & Api gateway.
-  
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+  lambda-dynamodb job trend api
 Globals:
   Function:
     Timeout: 900
 
 Resources:
-  CrawlerFunction:
+  HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
       Architectures:
-        - x86_64
+      - x86_64
       Events:
         HelloWorld:
           Type: Api
           Properties:
-            Path: /test
+            Path: /search
             Method: get
     Metadata:
-      DockerTag: linkendin_job_trend_container
+      DockerTag: nodejs18.x-v1
       DockerContext: ./
       Dockerfile: Dockerfile
+
+Outputs:
+  WebEndpoint:
+    Description: API Gateway endpoint URL for making a job search trend request
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/search/"
