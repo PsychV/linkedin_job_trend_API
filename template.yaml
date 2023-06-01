@@ -7,14 +7,14 @@ Globals:
     Timeout: 900
 
 Resources:
-  HelloWorldFunction:
+  SearchJobsFunction:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
       Architectures:
       - x86_64
       Events:
-        HelloWorld:
+        SearchJobs:
           Type: Api
           Properties:
             Path: /search
@@ -26,5 +26,5 @@ Resources:
 
 Outputs:
   WebEndpoint:
-    Description: API Gateway endpoint URL for making a job search trend request
+    Description: REST API for search job trend API
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/search/"

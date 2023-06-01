@@ -3,7 +3,11 @@ import { CheerioCrawler, ProxyConfiguration } from 'crawlee';
 import { router } from './routes.js';
 import proxyPool from './proxyPool.js';
 
-const startUrls = ['https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=node&location=Barcelona, Cataluña, España&refresh=true&start=25'];
+const keywords = 'node';
+
+const location = 'Barcelona, Cataluña, España';
+
+const startUrls = [`https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=${keywords}&location=${location}&refresh=true&start=25`];
 // 25 * 39 = los casi 975 jobs que muestran publicos
 
 const crawler = new CheerioCrawler({

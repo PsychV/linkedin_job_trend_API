@@ -4,6 +4,7 @@
     "type": "module",
     "description": "This is an example of a Crawlee project.",
     "dependencies": {
+        "aws-sdk": "^2.1388.0",
         "crawlee": "^3.0.0"
     },
     "scripts": {
