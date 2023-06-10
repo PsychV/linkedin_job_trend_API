@@ -5,20 +5,83 @@ Description: >
 Globals:
   Function:
     Timeout: 900
-
+    Environment:
+      Variables:
+        JOB_SEARCH_TABLE:
+          Ref: jobSearchTable
 Resources:
-  SearchJobsFunction:
+  jobSearchTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: jobSearches
+      PrimaryKey:
+        Name: id
+        Type: String
+  JobSearchApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: '''POST, GET, DELETE'''
+  jobSearchFunction:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
       Architectures:
       - x86_64
+      Handler: app.lambdaHandler
+      Policies: 
+      - Statement:
+        - Sid: VisualEditor0
+          Effect: Allow
+          Action:
+          - dynamodb:BatchGetItem
+          - dynamodb:BatchWriteItem
+          - dynamodb:PutItem
+          - dynamodb:GetItem
+          - dynamodb:DeleteItem
+          - dynamodb:Scan
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+          - logs:CreateLogStream
+          - logs:CreateLogGroup
+          Resource:
+          - arn:aws:logs:<aws-region>:<account_id>:log-group:*
+          - arn:aws:dynamodb:<aws-region>:<account_id>:table/products
+        - Sid: VisualEditor1
+          Effect: Allow
+          Action:
+          - logs:PutLogEvents
+          Resource: arn:aws:logs:<aws-region>:<account_id>:log-group:*:log-stream:*
       Events:
-        SearchJobs:
+        GetJobSearch:
           Type: Api
           Properties:
-            Path: /search
+            Path: /JobSearch/{id}
             Method: get
+            RestApiId:
+              Ref: JobSearchApi
+        AddJobSearch:
+          Type: Api
+          Properties:
+            Path: /JobSearch
+            Method: post
+            RestApiId:
+              Ref: JobSearchApi
+        DeleteJobSearch:
+          Type: Api
+          Properties:
+            Path: /JobSearch/{id}
+            Method: delete
+            RestApiId:
+              Ref: JobSearchApi
+        ListJobSearches:
+          Type: Api
+          Properties:
+            Path: /JobSearch
+            Method: get
+            RestApiId:
+              Ref: JobSearchApi
     Metadata:
       DockerTag: nodejs18.x-v1
       DockerContext: ./
@@ -27,4 +90,4 @@ Resources:
 Outputs:
   WebEndpoint:
     Description: REST API for search job trend API
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/search/"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"

@@ -11,11 +11,10 @@ const baseURL = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings
 
 let URLlist = [];
 
-//Linkedin shows for free without an account about 975 jobs, jobs can be retrieved in packs of 25 using their api
+//Linkedin shows for free about 975 jobs without using an account, jobs can be retrieved in packs of 25 using their api
 for(let i = 25; i < 1000; i+=25){
     URLlist.push(baseURL+`keywords=${keywords}&location=${location}&refresh=true&start=${i}`);
 }
-console.log(URLlist);
 
 const crawler = new CheerioCrawler({
     maxConcurrency: 1,
@@ -25,4 +24,4 @@ const crawler = new CheerioCrawler({
     
 });
 
-await crawler.run(startUrls);
+await crawler.run(URLlist);

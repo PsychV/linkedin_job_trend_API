@@ -1,27 +1,96 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: 'Linkedin job api trend with node.js, crawlee.js. DynamoDB & Api gateway.
+Description: 'lambda-dynamodb job trend api
 
   '
 Globals:
   Function:
     Timeout: 900
+    Environment:
+      Variables:
+        JOB_SEARCH_TABLE:
+          Ref: jobSearchTable
 Resources:
-  CrawlerFunction:
+  jobSearchTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: jobSearches
+      PrimaryKey:
+        Name: id
+        Type: String
+  JobSearchApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: '''POST, GET, DELETE'''
+  jobSearchFunction:
     Type: AWS::Serverless::Function
     Properties:
       PackageType: Image
       Architectures:
       - x86_64
+      Handler: app.lambdaHandler
+      Policies:
+      - Statement:
+        - Sid: VisualEditor0
+          Effect: Allow
+          Action:
+          - dynamodb:BatchGetItem
+          - dynamodb:BatchWriteItem
+          - dynamodb:PutItem
+          - dynamodb:GetItem
+          - dynamodb:DeleteItem
+          - dynamodb:Scan
+          - dynamodb:Query
+          - dynamodb:UpdateItem
+          - logs:CreateLogStream
+          - logs:CreateLogGroup
+          Resource:
+          - arn:aws:logs:<aws-region>:<account_id>:log-group:*
+          - arn:aws:dynamodb:<aws-region>:<account_id>:table/products
+        - Sid: VisualEditor1
+          Effect: Allow
+          Action:
+          - logs:PutLogEvents
+          Resource: arn:aws:logs:<aws-region>:<account_id>:log-group:*:log-stream:*
       Events:
-        search:
+        GetJobSearch:
           Type: Api
           Properties:
-            Path: /search
+            Path: /JobSearch/{id}
             Method: get
-      ImageUri: crawlerfunction:linkendin_job_trend_container
+            RestApiId:
+              Ref: JobSearchApi
+        AddJobSearch:
+          Type: Api
+          Properties:
+            Path: /JobSearch
+            Method: post
+            RestApiId:
+              Ref: JobSearchApi
+        DeleteJobSearch:
+          Type: Api
+          Properties:
+            Path: /JobSearch/{id}
+            Method: delete
+            RestApiId:
+              Ref: JobSearchApi
+        ListJobSearches:
+          Type: Api
+          Properties:
+            Path: /JobSearch
+            Method: get
+            RestApiId:
+              Ref: JobSearchApi
+      ImageUri: jobsearchfunction:nodejs18.x-v1
     Metadata:
       DockerContext: C:\Users\34670\Code\linkedin_job_trend_API
-      DockerTag: linkendin_job_trend_container
+      DockerTag: nodejs18.x-v1
       Dockerfile: Dockerfile
-      SamResourceId: CrawlerFunction
+      SamResourceId: jobSearchFunction
+Outputs:
+  WebEndpoint:
+    Description: REST API for search job trend API
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/

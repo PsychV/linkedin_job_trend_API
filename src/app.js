@@ -11,9 +11,9 @@ const client = new DynamoDBClient({});
 
 const dynamo = DynamoDBDocumentClient.from(client);
 
-const tableName = "jobSearch";
+const tableName = "JobSearch";
 
-export const handler = async (event, context) => {
+export const lambdaHandler = async (event, context) => {
   let body;
   let statusCode = 200;
   const headers = {
