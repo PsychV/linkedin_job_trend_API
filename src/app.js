@@ -22,17 +22,6 @@ export const lambdaHandler = async (event, context) => {
 
   try {
     switch (event.routeKey) {
-      case "DELETE /items/{id}":
-        await dynamo.send(
-          new DeleteCommand({
-            TableName: tableName,
-            Key: {
-              id: event.pathParameters.id,
-            },
-          })
-        );
-        body = `Deleted item ${event.pathParameters.id}`;
-        break;
       case "GET /items/{id}":
         body = await dynamo.send(
           new GetCommand({
@@ -64,6 +53,17 @@ export const lambdaHandler = async (event, context) => {
         );
         body = `Put item ${requestJSON.id}`;
         break;
+          case "DELETE /items/{id}":
+            await dynamo.send(
+              new DeleteCommand({
+                TableName: tableName,
+                Key: {
+                  id: event.pathParameters.id,
+                },
+              })
+            );
+            body = `Deleted item ${event.pathParameters.id}`;
+            break;
       default:
         throw new Error(`Unsupported route: "${event.routeKey}"`);
     }

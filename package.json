@@ -8,7 +8,7 @@
         "crawlee": "^3.0.0"
     },
     "scripts": {
-        "start": "node src/app.js",
+        "start": "node src/linkedinJobCrawler.js",
         "test": "echo \"Error: oops, the actor has no tests yet, sad!\" && exit 1"
     },
     "author": "It's not you it's me",
