@@ -11,7 +11,6 @@ router.addDefaultHandler(async ({ enqueueLinks, log }) => {
 });
 
 router.addHandler('detail', async ({ request, $, log }) => {
-    
     await sleep(500 + (Math.random() * 1500));
 
     const title = $('title').text();
@@ -29,3 +28,4 @@ router.addHandler('detail', async ({ request, $, log }) => {
         jobDescription,
     });
 });
+
