@@ -12,20 +12,25 @@ const baseURL = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings
 
 let URLlist = [];
 
-//Linkedin shows for free about 975 jobs without using an account, jobs can be retrieved in packs of 25 using their api
-for(let i = 25; i < 1000; i+=25){
-    URLlist.push(baseURL+`keywords=${keywords}&location=${location}&refresh=true&start=${i}`);
+const getAllLinks = true;
+
+if (getAllLinks){
+    //Linkedin shows for free about 975 jobs without using an account, jobs can be retrieved in packs of 25 using their api
+    for(let i = 25; i < 1000; i+=25){
+        URLlist.push(baseURL+`keywords=${keywords}&location=${location}&refresh=true&start=${i}`);
+    }
+} else {
+    URLlist = [baseURL+`keywords=${keywords}&location=${location}&refresh=true&start=${25}`]
 }
 
 const crawler = new CheerioCrawler({
     maxConcurrency: 1,
-    maxRequestsPerCrawl: 5, 
+    maxRequestsPerCrawl: 1040, 
     maxRequestsPerMinute: 15, // Linkedin limit seems to be around 900 requests per hour -> https://github.com/tomquirk/linkedin-api
     requestHandler: router,
-    
 });
 
-await crawler.run(URLlist);
+await crawler.run(baseURL+`keywords=${keywords}&location=${location}&refresh=true&start=${25}`);
 
 function formatSpaces(string){
     return string.replace(/\s/g, "%2C%20")
