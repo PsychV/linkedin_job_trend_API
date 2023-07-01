@@ -12,7 +12,7 @@ const baseURL = 'https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings
 
 let URLlist = [];
 
-const getAllLinks = true;
+const getAllLinks = false;
 
 if (getAllLinks){
     //Linkedin shows for free about 975 jobs without using an account, jobs can be retrieved in packs of 25 using their api
@@ -20,7 +20,7 @@ if (getAllLinks){
         URLlist.push(baseURL+`keywords=${keywords}&location=${location}&refresh=true&start=${i}`);
     }
 } else {
-    URLlist = [baseURL+`keywords=${keywords}&location=${location}&refresh=true&start=${25}`]
+    URLlist.push(baseURL+`keywords=${keywords}&location=${location}&refresh=true&start=${25}`);
 }
 
 const crawler = new CheerioCrawler({
@@ -30,7 +30,7 @@ const crawler = new CheerioCrawler({
     requestHandler: router,
 });
 
-await crawler.run(baseURL+`keywords=${keywords}&location=${location}&refresh=true&start=${25}`);
+await crawler.run(URLlist);
 
 function formatSpaces(string){
     return string.replace(/\s/g, "%2C%20")

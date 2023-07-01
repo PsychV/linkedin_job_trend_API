@@ -5,7 +5,7 @@ export const router = createCheerioRouter();
 router.addDefaultHandler(async ({ enqueueLinks, log }) => {
     log.info(`enqueueing new URLs`);
     await enqueueLinks({
-        globs: ['**/**'],
+        globs: ['**/jobs/view/**'],
         label: 'detail',
     });
 });
