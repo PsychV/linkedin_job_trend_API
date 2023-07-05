@@ -54,31 +54,10 @@ Resources:
           - logs:PutLogEvents
           Resource: arn:aws:logs:<aws-region>:<account_id>:log-group:*:log-stream:*
       Events:
-        GetJobSearch:
+        getJobSearch:
           Type: Api
           Properties:
-            Path: /JobSearch/{id}
-            Method: get
-            RestApiId:
-              Ref: JobSearchApi
-        AddJobSearch:
-          Type: Api
-          Properties:
-            Path: /JobSearch
-            Method: post
-            RestApiId:
-              Ref: JobSearchApi
-        DeleteJobSearch:
-          Type: Api
-          Properties:
-            Path: /JobSearch/{id}
-            Method: delete
-            RestApiId:
-              Ref: JobSearchApi
-        ListJobSearches:
-          Type: Api
-          Properties:
-            Path: /JobSearch
+            Path: /jobsearch?keywords={keywords}&location={location}
             Method: get
             RestApiId:
               Ref: JobSearchApi
